@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { Hero } from '../../model/hero';
 import { HeroCardComponent } from '../hero-card-component/hero-card-component';
 import { CommonModule } from '@angular/common';
+import { HeroChangeComponent } from '../hero-change-component/hero-change-component';
 
 
 @Component({
   selector: 'app-app-component',
-  imports: [HeroCardComponent, CommonModule],
+  imports: [HeroCardComponent, HeroChangeComponent, CommonModule],
   templateUrl: './app-component.html',
   styleUrl: './app-component.css',
 })
