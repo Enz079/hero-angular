@@ -18,8 +18,12 @@ export class AppComponent {
       { id: 1, nome: 'Spider-Man', potere: 'Ragnatele', completata: false },
       { id: 2, nome: 'Iron Man', potere: 'Tecnologia', completata: false },
       { id: 3, nome: 'Thor', potere: 'Tuono', completata: false }
-    ];
-  
+  ];
+
+  getList() {
+    return this.heroes;
+  }
+
   totalCompleted = 0;  
 
   markAsDone(hero : Hero) : void{
