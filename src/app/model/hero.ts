@@ -1,7 +1,7 @@
 export interface Hero {
-    
-    id: number;
-    nome: string;
-    potere: string;
-    completata: boolean;
+  id?: number;
+  _id?: string;
+  nome: string;
+  potere: string;
+  completata: boolean;
 }

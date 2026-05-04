@@ -1,4 +1,13 @@
-<input [(ngModel)]='hero.nome'>
-<input [(ngModel)]='hero.potere'>
+<div class="hero-form">
+  <label>
+    Nome
+    <input name="nome" [(ngModel)]="hero.nome" placeholder="Nome eroe" />
+  </label>
 
-<button (click)="save()">Salva</button>
+  <label>
+    Potere
+    <input name="potere" [(ngModel)]="hero.potere" placeholder="Potere" />
+  </label>
+
+  <button type="button" (click)="save()">Salva</button>
+</div>

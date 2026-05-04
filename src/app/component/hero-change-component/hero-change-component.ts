@@ -3,28 +3,24 @@ import { Hero } from '../../model/hero';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-
 @Component({
   selector: 'app-hero-change-component',
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './hero-change-component.html',
-  styleUrl: './hero-change-component.css',
+  styleUrls: ['./hero-change-component.css'],
 })
 export class HeroChangeComponent {
-
-  @Input() hero : Hero = {
-
-    id: 0,
+  @Input() hero: Hero = {
+    id: -1,
     nome: '',
     potere: '',
-    completata: false 
-  }
+    completata: false,
+  };
 
   @Output() onSave = new EventEmitter<Hero>();
 
-  save() : void{
-
+  save(): void {
     this.onSave.emit(this.hero);
-
   }
 }

@@ -1,18 +1,20 @@
 <h1>Mission controls</h1>
 <div class="container">
-        
-    <app-hero-card-component
-        *ngFor="let h of heroes"
-        [hero]="h"
-        (onMissionDone)="markAsDone($event)"
-        (click)="modificaHero(h)">
-    </app-hero-card-component>
+  <app-hero-card-component
+    *ngFor="let h of heroes"
+    [hero]="h"
+    (onMissionDone)="markAsDone($event)"
+    (onDelete)="deleteHero($event)"
+    (click)="modificaHero(h)">
+  </app-hero-card-component>
 </div>
-    
+
 <p>Missioni completate: {{ totalCompleted }}</p>
 
 <h2>Inserisci o modifica una missione</h2>
-
-<app-hero-change-component (onSave)="addHero($event)" [hero]="selectedHero"></app-hero-change-component>
+<app-hero-change-component
+  (onSave)="addHero($event)"
+  [hero]="selectedHero">
+</app-hero-change-component>
 
 

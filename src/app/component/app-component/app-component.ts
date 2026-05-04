@@ -1,57 +1,63 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Hero } from '../../model/hero';
 import { HeroCardComponent } from '../hero-card-component/hero-card-component';
 import { CommonModule } from '@angular/common';
 import { HeroChangeComponent } from '../hero-change-component/hero-change-component';
-
+import { Herolist } from '../../service/herolist';
 
 @Component({
   selector: 'app-app-component',
+  standalone: true,
   imports: [HeroCardComponent, HeroChangeComponent, CommonModule],
   templateUrl: './app-component.html',
-  styleUrl: './app-component.css',
+  styleUrls: ['./app-component.css'],
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
+  selectedHero: Hero = {
+    nome: '',
+    potere: '',
+    completata: false,
+  };
 
-  heroes: Hero[] = [
-      { id: 1, nome: 'Spider-Man', potere: 'Ragnatele', completata: false },
-      { id: 2, nome: 'Iron Man', potere: 'Tecnologia', completata: false },
-      { id: 3, nome: 'Thor', potere: 'Tuono', completata: false }
-    ];
-  
-  totalCompleted = 0;  
+  heroes: Hero[] = [];
 
-  markAsDone(hero : Hero) : void{
+  constructor(private heroService: Herolist) {}
 
+  ngOnInit() {
+    this.loadHeroes();
+    this.selectedHero = this.heroService.heroSelected;
+  }
+
+  get totalCompleted(): number {
+    return this.heroes.filter((hero) => hero.completata).length;
+  }
+
+  loadHeroes(): void {
+    this.heroService.getHeroes().subscribe((heroes) => {
+      this.heroes = heroes;
+    });
+  }
+
+  markAsDone(hero: Hero): void {
     hero.completata = true;
-    this.totalCompleted++;
-  }
-  
-  addHero(hero : Hero) : void{
-
-    for(let h of this.heroes){
-
-      if(h.id == hero.id){
-        
-        return;
-      }
-    }
-
-    if(hero.id == 0){
-      
-      hero.id = this.heroes.length ++;
-    }
-    this.heroes.push(hero);
-
+    this.heroService.markAsDone(hero).subscribe(() => this.loadHeroes());
   }
 
-  selectedHero !: Hero;
-
-  modificaHero(hero: Hero) : void{
-
-    this.selectedHero = hero;
-
+  modificaHero(hero: Hero): void {
+    this.heroService.selectHero(hero);
+    this.selectedHero = this.heroService.heroSelected;
   }
-  
+
+  addHero(hero: Hero): void {
+    this.heroService.saveHero(hero).subscribe(() => {
+      this.loadHeroes();
+      this.heroService.resetSelectedHero();
+      this.selectedHero = this.heroService.heroSelected;
+    });
+  }
+
+  deleteHero(hero: Hero): void {
+    this.heroService.deleteHero(hero).subscribe(() => this.loadHeroes());
+  }
 }
