@@ -35,6 +35,7 @@ export class AppComponent implements OnInit {
 
   loadHeroes(): void {
     this.heroService.getHeroes().subscribe((heroes) => {
+      console.log('Eroi caricati:', heroes);
       this.heroes = heroes;
     });
   }
@@ -50,7 +51,9 @@ export class AppComponent implements OnInit {
   }
 
   addHero(hero: Hero): void {
+    console.log('addHero chiamato:', hero);
     this.heroService.saveHero(hero).subscribe(() => {
+      console.log('Eroe salvato, ricarico lista');
       this.loadHeroes();
       this.heroService.resetSelectedHero();
       this.selectedHero = this.heroService.heroSelected;

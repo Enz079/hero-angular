@@ -1,9 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, map, catchError, of } from 'rxjs';
 import { Hero } from '../model/hero';
 
-const API_URL = 'https://crudcrud.com/api/7587050510f14b38aed98fd7e8bdb3ef/heroes';
+const API_URL = 'https://cac78ba557f30958492e.free.beeceptor.com';
+
+const HEROES: Hero[] = [
+  { _id: '1', id: 1, nome: 'Superman', potere: 'Volo', completata: false },
+  { _id: '2', id: 2, nome: 'Batman', potere: 'Intelligenza', completata: false },
+  { _id: '3', id: 3, nome: 'Wonder Woman', potere: 'Forza', completata: false },
+];
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +31,10 @@ export class Herolist {
           id: hero.id ?? index + 1,
         })),
       ),
+      catchError(() => {
+        // Se l'API non funziona, usa i dati 
+        return of(HEROES);
+      }),
     );
   }
 
@@ -34,11 +44,19 @@ export class Herolist {
         map(() => hero),
       );
     }
+    
+    // Per nuovi eroi, aggiungi alla lista locale
+    const newId = Math.max(...HEROES.map(h => h.id || 0), 0) + 1;
+    const newHero: Hero = {
+      ...hero,
+      _id: newId.toString(),
+      id: newId,
+    };
+    HEROES.push(newHero);
+    
     return this.http.post<Hero>(API_URL, hero).pipe(
-      map((createdHero) => ({
-        ...createdHero,
-        id: createdHero.id ?? hero.id,
-      })),
+      map(() => newHero),
+      catchError(() => of(newHero)), // Se l'API fallisce, ritorna il nuovo eroe comunque
     );
   }
 

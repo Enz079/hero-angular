@@ -21,6 +21,7 @@ export class HeroChangeComponent {
   @Output() onSave = new EventEmitter<Hero>();
 
   save(): void {
+    console.log('Salvataggio eroe:', this.hero);
     this.onSave.emit(this.hero);
   }
 }
